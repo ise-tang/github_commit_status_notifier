@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(){
   var button = document.getElementById('button');
   button.addEventListener('click', function() {
+    notify('Pull Request CI Status', "start checking");
+
     var commitUrl = chrome.extension.getBackgroundPage().commitUrl;
     console.log(commitUrl);
     var org_repo_re = /\/(.*?\/.*?)\/pull/;
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function(){
       xhr.onload = function(){
         console.log(xhr.response["state"]);
         if (xhr.response["state"] != 'pending'){
-          notify('Pull Request Status', xhr.response["state"]);
+          notify('Pull Request CI Status', "Result: " + xhr.response["state"]);
           clearInterval(id);
         }
       }
@@ -37,6 +39,10 @@ function notify(title, message) {
       message: message
       }, function(){}
   );
+
+  setTimeout(function() {
+    chrome.notifications.clear(nid);
+  }, 3000);
 
   chrome.notifications.onClicked.addListener(function(nid){
     chrome.notifications.clear(nid);
