@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "GitHub Status Notifier",
+  "version": "0.1.0",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "notifications"
+  ],
+  "background": {
+    "scripts": ["./scripts/background.js"]
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "matches": [
+        "https://github.com/*/*/pull/*"
+      ],
+      "js": [
+        "scripts/url_sender.js"
+      ]
+    }
+  ],
+}
