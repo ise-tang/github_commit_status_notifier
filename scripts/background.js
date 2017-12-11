@@ -9,37 +9,46 @@ function checkForValidUrl(tabId, changeInfo, tab) {
   // Listen for any changes to the URL of any tab.
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
 
-var commitUrl = "";
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse){
-    commitUrl = request.url;
-  }
-);
-
 chrome.pageAction.onClicked.addListener(function(){
-  notify('Pull Request CI Status', "start checking");
+  if (localStorage.getItem('interval') != undefined) {
+    var interval = Number(localStorage.getItem('interval')) * 1000;
+  } else {
+    var interval = 10 * 1000;
+  }
 
-  console.log(commitUrl);
-  var org_repo_re = /\/(.*?\/.*?)\/pull/;
-  var org_repo = org_repo_re.exec(commitUrl)[1];
+  // request commit url to content script
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {}, function(response) {
+      console.log(response.url);
+      commitUrl = response.url;
 
-  var commits_re = /.*commits\/(.*?)$/;
-  var commit = commits_re.exec(commitUrl)[1];
-  
-  var id = setInterval(function(){
-    var xhr = new XMLHttpRequest();
-    var url = "https://api.github.com/repos/" + org_repo + "/commits/" + commit + "/status?access_token=" + localStorage.getItem('token');
-    xhr.open("GET", url)
-    xhr.onload = function(){
-      console.log(xhr.response["state"]);
-      if (xhr.response["state"] != 'pending'){
-        notify('Pull Request CI Status', "Result: " + xhr.response["state"]);
-        clearInterval(id);
-      }
-    }
-    xhr.responseType = 'json';
-    xhr.send();
-  }, 5 * 1000);
+      notify('Pull Request CI Status', "start checking");
+
+      console.log(commitUrl);
+      var org_repo_re = /\/(.*?\/.*?)\/pull/;
+      var org_repo = org_repo_re.exec(commitUrl)[1];
+
+      var commits_re = /.*commits\/(.*?)$/;
+      var commit = commits_re.exec(commitUrl)[1];
+
+      var id = setInterval(function(){
+        var xhr = new XMLHttpRequest();
+        var url = "https://api.github.com/repos/" + org_repo + "/commits/" + commit + "/status?access_token=" + localStorage.getItem('token');
+        xhr.open("GET", url)
+        xhr.onload = function(){
+          console.log(xhr.response["state"]);
+          if (xhr.response["state"] != 'pending'){
+            notify('Pull Request CI Status', "Result: " + xhr.response["state"]);
+            clearInterval(id);
+          }
+        }
+        xhr.responseType = 'json';
+        xhr.send();
+      }, interval);
+    });
+  });
+
+
 });
 
 function notify(title, message) {

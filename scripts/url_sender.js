@@ -1,9 +1,9 @@
-var commmitUrls = document.getElementsByClassName('commit-id');
-var commmitUrl = commmitUrls[commmitUrls.length - 1].getAttribute('href');
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    var commitUrls = document.getElementsByClassName('commit-id');
+    var commitUrl = commitUrls[commitUrls.length - 1].getAttribute('href');
+    console.log(commitUrl);
 
-chrome.runtime.sendMessage(
-  { "url": commmitUrl },
-  function(response) {
-    console.log('sent message');
+    sendResponse({'url': commitUrl});
   }
-);
+)
