@@ -68,6 +68,7 @@ function notify(title, message) {
   }, 3000);
 
   chrome.notifications.onClicked.addListener(function(nid){
-    chrome.notifications.clear(nid);
+    var prUrl = /\/(.*?\/.*?\/pull\/.*?\/)/.exec(commitUrl)[1];
+    chrome.tabs.create({'url': "https://github.com/" + prUrl});
   })
 }
