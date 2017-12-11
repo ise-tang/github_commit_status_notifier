@@ -3,7 +3,6 @@
   "name": "GitHub Status Notifier",
   "version": "0.1.0",
   "page_action": {
-    "default_popup": "popup.html"
   },
   "options_page": "options.html",
   "permissions": [
