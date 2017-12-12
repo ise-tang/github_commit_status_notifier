@@ -26,7 +26,7 @@ Pull Request に紐づく CI などの Status を定期的にチェックして�
 
 を参考に取得してください
 
-scope は repo:status にチェックを入れてください
+scope は repo:status にチェックを入れてください
 
 ![image](https://user-images.githubusercontent.com/2083116/33912825-b437b25e-dfda-11e7-9c62-e385fb6ac2e0.png)
 
