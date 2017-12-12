@@ -52,7 +52,7 @@ chrome.pageAction.onClicked.addListener(function(){
 });
 
 function notify(title, message) {
-  var nid = "hoge";
+  var nid = Math.floor( Math.random() * 10000);
   var notifier = chrome.notifications.create(
     nid,
     {
