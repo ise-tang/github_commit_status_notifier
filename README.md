@@ -18,7 +18,7 @@ Pull Request に紐づく CI などの Status を定期的にチェックして�
 ![image](https://user-images.githubusercontent.com/2083116/33885791-b3713316-df87-11e7-8abb-75ea3783a22d.png)
 
 
-## API トークンを取得する
+## API トークンを取得する
 
 まずステータスの取得に必要なAPIトークンを取得します。
 
@@ -28,11 +28,11 @@ Pull Request に紐づく CI などの Status を定期的にチェックして�
 
 ## API トークンを設定する
 
-オプションをクリック
+オプションをクリック
 
 ![image](https://user-images.githubusercontent.com/2083116/33885867-fd079ad8-df87-11e7-91f6-f99c4c8dc2c1.png)
 
-「GitHub Token」の右のテキストボックスにさきほど取得したトークンを貼り付け、Saveを押します。
+「GitHub Token」の右のテキストボックスにさきほど取得したトークンを貼り付け、Saveを押します。
 
 # 使い方
 
