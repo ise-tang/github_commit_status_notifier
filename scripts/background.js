@@ -65,7 +65,7 @@ function notify(title, message) {
 
   setTimeout(function() {
     chrome.notifications.clear(nid);
-  }, 3000);
+  }, 7000);
 
   chrome.notifications.onClicked.addListener(function(nid){
     var prUrl = /\/(.*?\/.*?\/pull\/.*?\/)/.exec(commitUrl)[1];
