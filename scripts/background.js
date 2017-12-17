@@ -68,9 +68,9 @@ function notify(title, message) {
   setTimeout(function() {
     chrome.notifications.clear(nid);
   }, 7000);
-
-  chrome.notifications.onClicked.addListener(function(){
-    var prUrl = /\/(.*?\/.*?\/pull\/.*?\/)/.exec(commitUrl)[1];
-    chrome.tabs.create({"url": "https://github.com/" + prUrl});
-  });
 }
+
+chrome.notifications.onClicked.addListener(function(){
+  var prUrl = /\/(.*?\/.*?\/pull\/.*?\/)/.exec(commitUrl)[1];
+  chrome.tabs.create({"url": "https://github.com/" + prUrl});
+});
