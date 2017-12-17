@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "GitHub Status Notifier",
+  "name": "GitHub Commit Status Notifier",
   "version": "1.0.0",
   "page_action": {
   },

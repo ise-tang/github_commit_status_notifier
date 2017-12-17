@@ -1,5 +1,5 @@
 {
-  "name": "github_status_notifier",
+  "name": "github_commit_status_notifier",
   "version": "1.0.0",
   "description": "github commit status checker",
   "main": "background.js",
