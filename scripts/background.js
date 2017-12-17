@@ -1,19 +1,21 @@
 // Called when the url of a tab changes.
 function checkForValidUrl(tabId, changeInfo, tab) {
   console.log("checkForValidUrl");
-    if (/https:\/\/github\.com\/.*\/pull\//.test(tab.url)) {
-      chrome.pageAction.show(tabId);
-    }
-  };
+  if (/https:\/\/github\.com\/.*\/pull\//.test(tab.url)) {
+    chrome.pageAction.show(tabId);
+  }
+}
 
-  // Listen for any changes to the URL of any tab.
+// Listen for any changes to the URL of any tab.
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
 
+var commitUrl = "";
 chrome.pageAction.onClicked.addListener(function(){
-  if (localStorage.getItem('interval') != undefined) {
-    var interval = Number(localStorage.getItem('interval')) * 1000;
+  var interval = 0;
+  if (localStorage.getItem("interval") != undefined) {
+    interval = Number(localStorage.getItem("interval")) * 1000;
   } else {
-    var interval = 10 * 1000;
+    interval = 10 * 1000;
   }
 
   // request commit url to content script
@@ -22,7 +24,7 @@ chrome.pageAction.onClicked.addListener(function(){
       console.log(response.url);
       commitUrl = response.url;
 
-      notify('Pull Request CI Status', "start checking");
+      notify("Pull Request CI Status", "start checking");
 
       console.log(commitUrl);
       var org_repo_re = /\/(.*?\/.*?)\/pull/;
@@ -33,16 +35,16 @@ chrome.pageAction.onClicked.addListener(function(){
 
       var id = setInterval(function(){
         var xhr = new XMLHttpRequest();
-        var url = "https://api.github.com/repos/" + org_repo + "/commits/" + commit + "/status?access_token=" + localStorage.getItem('token');
-        xhr.open("GET", url)
+        var url = "https://api.github.com/repos/" + org_repo + "/commits/" + commit + "/status?access_token=" + localStorage.getItem("token");
+        xhr.open("GET", url);
         xhr.onload = function(){
           console.log(xhr.response["state"]);
-          if (xhr.response["state"] != 'pending'){
-            notify('Pull Request CI Status', "Result: " + xhr.response["state"]);
+          if (xhr.response["state"] != "pending"){
+            notify("Pull Request CI Status", "Result: " + xhr.response["state"]);
             clearInterval(id);
           }
-        }
-        xhr.responseType = 'json';
+        };
+        xhr.responseType = "json";
         xhr.send();
       }, interval);
     });
@@ -53,22 +55,22 @@ chrome.pageAction.onClicked.addListener(function(){
 
 function notify(title, message) {
   var nid = Math.random().toString(36).slice(-16);
-  var notifier = chrome.notifications.create(
+  chrome.notifications.create(
     nid,
     {
       type: "basic",
       iconUrl: "./images/info.png",
       title: title,
       message: message
-      }, function(){}
+    }, function(){}
   );
 
   setTimeout(function() {
     chrome.notifications.clear(nid);
   }, 7000);
 
-  chrome.notifications.onClicked.addListener(function(nid){
+  chrome.notifications.onClicked.addListener(function(){
     var prUrl = /\/(.*?\/.*?\/pull\/.*?\/)/.exec(commitUrl)[1];
-    chrome.tabs.create({'url': "https://github.com/" + prUrl});
-  })
+    chrome.tabs.create({"url": "https://github.com/" + prUrl});
+  });
 }
