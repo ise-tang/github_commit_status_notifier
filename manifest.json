@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "GitHub Status Notifier",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "page_action": {
   },
   "icons": {
