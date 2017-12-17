@@ -59,7 +59,7 @@ function notify(title, message) {
     nid,
     {
       type: "basic",
-      iconUrl: "./images/info.png",
+      iconUrl: "./images/icon128.png",
       title: title,
       message: message
     }, function(){}
